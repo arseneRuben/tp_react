@@ -16,19 +16,26 @@ function connect () {
 
     client.connect((error) => {
         if (error) {
-            throw error
+            console.error('connexion error', error.stack)
+        } else {
+            console.log('connected')
         }
     })
+    
 }
 
 function query (query, values, resultCallback) {
+  
     client.query(query, values, (error, result) => {
+        //console.log(error)
         if (error) {
             throw error
         }
         resultCallback(result)
     })
 }
+
+
 
 function disconnect () {
     client.end()
