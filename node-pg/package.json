@@ -1,0 +1,24 @@
+{
+  "name": "pg",
+  "version": "1.0.0",
+  "description": "exercice postgres",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "postgres"
+  ],
+  "author": "Jean",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.32.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1"
+  },
+  "dependencies": {
+    "pg": "^8.8.0"
+  }
+}
