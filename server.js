@@ -51,6 +51,15 @@ app.get('/playlists', function (request, response) {
         disconnect()
     } )
  })
+
+ app.get('/playlists/:id/tracks', function (request, response) {
+    response.writeHead(HTTP_OK, { 'Content-Type': CONTENT_TYPE_JSON })
+    connect()
+    query( "SELECT * FROM track WHERE playlist_id = "+parseInt(request.params.id), [], (result)=>{
+        response.end(JSON.stringify(result))
+        disconnect()
+    } )
+ })
 /*
 connect()
 
