@@ -1,0 +1,24 @@
+
+GET http://localhost:8080/playlists HTTP/1.1
+
+###
+
+GET http://localhost:8080/playlists/3 HTTP/1.1
+
+###
+
+POST http://localhost:8080/playlists HTTP/1.1
+content-type: application/json
+
+{ "title": "bateau"}
+
+###
+
+PUT http://localhost:8080/users HTTP/1.1
+content-type: application/json
+
+{ "id": 2, "lastName": "Plamondon" }
+
+###
+
+DELETE http://localhost:8080/playlists/4 HTTP/1.1

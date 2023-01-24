@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express')
+const { resourceUsage } = require('process')
 
 const app = express()
 // parse application/x-www-form-urlencoded
@@ -33,20 +34,30 @@ const {
 
 
 
+app.get('/playlists', function (request, response) {
+    response.writeHead(HTTP_OK, { 'Content-Type': CONTENT_TYPE_JSON })
+    connect()
+    query( "SELECT * FROM playlist ", [], (result)=>{
+        response.end(JSON.stringify(result))
+        disconnect()
+    } )
+ })
 
-const assert = require('assert').strict
-
+ app.get('/playlists/:id', function (request, response) {
+    response.writeHead(HTTP_OK, { 'Content-Type': CONTENT_TYPE_JSON })
+    connect()
+    query( "SELECT * FROM playlist WHERE id = "+parseInt(request.params.id), [], (result)=>{
+        response.end(JSON.stringify(result))
+        disconnect()
+    } )
+ })
+/*
 connect()
 
-query('SELECT * FROM playlist', [], (result) => {
-    assert.strictEqual(result.command, 'SELECT')
-    disconnect()
-  
-})
-app.get('/', function (request, response) {
-    response.writeHead(HTTP_OK, { 'Content-Type': CONTENT_TYPE_HTML })
-    response.end('<h1>Home page</h1>')
-})
+
+
+disconnect()*/
+
 app.listen(PORT, function () {
     console.log('Server listening on: http://localhost:%s', PORT)
 })
