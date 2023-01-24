@@ -38,6 +38,7 @@ function query (query, values, resultCallback) {
 
 
 function disconnect () {
+   
     client.end()
 }
 
