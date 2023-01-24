@@ -2,8 +2,8 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 
-import FormContainer from 'container/form-container'
+import Application from 'container/application'
 
 const container = document.getElementById('app')
 const root = createRoot(container)
-root.render(<FormContainer />)
+root.render(<Application />)
