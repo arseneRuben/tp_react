@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
-// import ListComponent from 'component/music-item-component'
 // import FormComponent from 'component/form-component'
 // import InputComponent from 'component/input-component'
 import PlayListSelectComponent from 'component/playlist-select-component'
 import SearchInputComponent from '../component/search-input-component'
+import ListComponent from '../component/list-component'
+
+const KEY = 'GendLgYFSUEiNXWLyZAm'
+const SECRET = 'GIQfagAeoNHfGjyBqzLvUSPNWcfLkJCV'
+const search = ''
+let URL = 'https://api.discogs.com/database/search?q=michael jason' + search + '&key=' + KEY + '&secret=' + SECRET
 
 class Application extends Component {
     constructor () {
@@ -11,7 +16,7 @@ class Application extends Component {
 
         this.state = {
             playlists: [],
-            categories: []
+            albums: []
         }
     }
 
@@ -23,8 +28,29 @@ class Application extends Component {
             })
     }
 
-    onSubmit = (search) => {
-        console.log(search)
+    onSubmit = (event) => {
+        console.log(event)
+    }
+
+    handleItemAddOnClick = (event) => {
+        console.log('Ajout', event)
+    }
+
+    handleItemDeleteOnClick = (event) => {
+        console.log('Delete', event)
+    }
+
+    handleOnChange = (e) => {
+        this.setState({ search: e.target.value })
+        URL = 'https://api.discogs.com/database/search?q=' + e.target.value + '&key=' + KEY + '&secret=' + SECRET
+    }
+
+    handleAddOnClick = (e) => {
+        fetch(URL, { method: 'GET' })
+            .then(response => response.json())
+            .then(response => {
+                this.setState({ albums: response })
+            })
     }
 
     renderForm () {
@@ -43,29 +69,24 @@ class Application extends Component {
                         <a className='navbar-brand' href='#'>Music</a>
                         <div className='collapse navbar-collapse' id='navbarCollapse'>
                             <PlayListSelectComponent options={this.state.playlists} />
-                            <form action={onSubmit} method='post' className='d-flex form-inline mt-2 mt-md-0'>
-                                <SearchInputComponent type='text' id='seach' name='criteria' label='Search' />
-                                <button className='btn btn-outline-success my-2 my-sm-0 m-10' type='submit'>Search</button>
-                            </form>
+                            <SearchInputComponent type='text' id='seach' name='q' label='Search' onChange={this.handleOnChange} />
+
+                            <button className='btn btn-outline-success my-2 my-sm-0 m-10' onClick={this.handleAddOnClick}>Search</button>
                         </div>
                     </nav>
                 </header>
                 <main role='main'>
                     <div id='myCarousel' class='carousel slide ' data-ride='carousel'>
 
-                        <div class='container marketing row'>
+                        <div className='container marketing row'>
                             <div className='col-md-1' />
                             <div className=' col-md-5'>
-                                <iframe width='560' height='315' src='https://www.youtube.com/embed/LchJqvP38y4' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen className='embed-responsive-item' />
+                                <iframe width='560' height='315' src='https://www.youtube.com/embed/LchJqvP38y4' title='YouTube video player' frameBorder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowFullScreen className='embed-responsive-item' />
                             </div>
                             <div className='col-md-2' />
                             <div className='mx-auto w-30 col-md-3'>
-                                <ul className='list-group'>
-                                    <li className='list-group-item active'> text1</li>
-                                    <li className='list-group-item '> Lorem ipsum dolor sit.</li>
-                                    <li className='list-group-item '> Lorem ipsum dolor sit.</li>
-                                    <li className='list-group-item '> Lorem ipsum dolor sit.</li>
-                                </ul>
+
+                                <ListComponent items={this.state.albums} onItemAddClick={this.handleAddOnClick} onItemDeleteClick={this.handleItemDeleteOnClick} />
                             </div>
                             <div className='col-md-1' />
                         </div>
@@ -77,7 +98,7 @@ class Application extends Component {
     }
 
     render () {
-        console.log(JSON.stringify(this.state.playlists))
+        console.log(this.state.albums)
         return (
             this.renderForm()
         )
