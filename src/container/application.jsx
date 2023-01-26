@@ -5,13 +5,22 @@ import React, { Component } from 'react'
 import PlayListSelectComponent from 'component/playlist-select-component'
 import SearchInputComponent from '../component/search-input-component'
 
+function buildHeader (method, body) {
+    return {
+        method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+}
+
 class Application extends Component {
     constructor () {
         super()
 
         this.state = {
             playlists: [],
-            categories: []
         }
     }
 
@@ -26,6 +35,39 @@ class Application extends Component {
     onSubmit = (search) => {
         console.log(search)
     }
+
+    handleItemOnClick = (event) => {
+        // Le <span> déclenche l'événement et se trouve à l'intérieur du <li> qui contient l'attribut id
+        const id = event.target.parentElement.id
+
+        fetch('http://localhost:8080/users/' + id, { method: 'GET' })
+            .then(response => response.json())
+            .then(responseObject => {
+                this.setState({
+                    formValues: responseObject,
+                    showForm: true
+                })
+            })
+    }
+
+    handleItemDeleteOnClick = (event) => {
+        // Le <button> déclenche l'événement et se trouve à l'intérieur du <li> qui contient l'attribut id
+        const id = event.target.parentElement.id
+
+        fetch('http://localhost:8080/users/' + id, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(response => {
+                this.setState({ users: response })
+            })
+    }
+
+    handleAddOnClick = () => {
+        this.setState({
+            formValues: {},
+            showForm: true
+        })
+    }
+
 
     renderForm () {
         // console.log(this.state.playlists)

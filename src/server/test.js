@@ -16,7 +16,6 @@ dao.query('SELECT count(*) AS total FROM nodepg', [], (countResult) => {
     dao.query('INSERT INTO nodepg (stringField, numberField, booleanField) VALUES ($1, $2, $3)', ['chaîne de caractères 4', 669, false], function () {
         dao.query('SELECT * FROM nodepg', [], (result) => {
             assert.strictEqual(result.rowCount, total + 1)
-
             dao.disconnect()
         })
     })

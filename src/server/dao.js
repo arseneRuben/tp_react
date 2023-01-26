@@ -26,7 +26,6 @@ function connect () {
 
 function query (query, values, resultCallback) {
     client.query(query, values, (error, result) => {
-        //console.log(error)
         if (error) {
             throw error
         }
@@ -36,7 +35,6 @@ function query (query, values, resultCallback) {
 
 
 function disconnect () {
-   
     client.end()
 }
 
