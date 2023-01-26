@@ -1,22 +1,24 @@
 import React from 'react'
 
-function renderLi (item, onItemAddClick, onItemDeleteClick) {
+function renderLi (item, onItemReadClick, onItemToggleClick) {
     return (
-        <li key={item.id} id={item.id}>
-            <span onClick={onItemAddClick}>
-                {item.userName}
+        <li key={item.id} class='list-group-item'>
+
+            <i className='fa fa-plus' onClick={onItemToggleClick} aria-hidden='true' />
+
+            <span id={item.master_id} onClick={onItemReadClick}>
+                {item.title}
             </span>
-            <button onClick={onItemDeleteClick}>X</button>
+
         </li>
     )
 }
 
-const ListComponent = ({ items, onItemAddClick, onItemDeleteClick }) => (
+const ListComponent = ({ items, onItemReadClick, onItemToggleClick }) => (
     <div>
-        <ul>
-            {items.map((item) => renderLi(item, onItemAddClick, onItemDeleteClick))}
-        </ul>
-
+        {items.length > 0
+            ? <ul className='list-group'> {items.map((item) => renderLi(item, onItemReadClick, onItemToggleClick))} </ul>
+            : <h2> pas de resultats</h2>}
     </div>
 )
 

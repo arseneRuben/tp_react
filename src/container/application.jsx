@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 // import FormComponent from 'component/form-component'
-// import InputComponent from 'component/input-component'
+import MusicData from '../music-data'
 import PlayListSelectComponent from 'component/playlist-select-component'
 import SearchInputComponent from '../component/search-input-component'
 import ListComponent from '../component/list-component'
 
-const KEY = 'GendLgYFSUEiNXWLyZAm'
-const SECRET = 'GIQfagAeoNHfGjyBqzLvUSPNWcfLkJCV'
-const search = ''
-let URL = 'https://api.discogs.com/database/search?q=michael jason' + search + '&key=' + KEY + '&secret=' + SECRET
+// const KEY = 'GendLgYFSUEiNXWLyZAm'
+/// const SECRET = 'GIQfagAeoNHfGjyBqzLvUSPNWcfLkJCV'
+const TOKEN = 'ZDSywGmthFbqZYsyJiWrxCYQdXNCtDBNAPopheIC'
+// const search = ''
+let URL = 'https://api.discogs.com/database/search?q'
+/*
+function findUrl (datas, id) {
+    const index = datas.findIndex(function (element) {
+        return element.id === parseInt(id)
+    })
 
+    return datas[index].url
+} */
 class Application extends Component {
     constructor () {
         super()
@@ -17,6 +25,7 @@ class Application extends Component {
         this.state = {
             playlists: [],
             albums: []
+
         }
     }
 
@@ -24,7 +33,7 @@ class Application extends Component {
         fetch('http://localhost:8080/playlists', { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                this.setState({ playlists: response.rows })
+                this.setState({ playlists: response.rows, musicData: new MusicData(TOKEN) })
             })
     }
 
@@ -32,20 +41,20 @@ class Application extends Component {
         console.log(event)
     }
 
-    handleItemAddOnClick = (event) => {
-        console.log('Ajout', event)
+    handleItemReadClick = (event) => {
+        (new MusicData(TOKEN)).getMaster(event.target.id, this.handleItemMasterOnClick)
     }
 
-    handleItemDeleteOnClick = (event) => {
-        console.log('Delete', event)
+    updateListComponent = (data) => {
+        this.setState({ albums: data.results })
     }
 
-    handleOnChange = (e) => {
-        this.setState({ search: e.target.value })
-        URL = 'https://api.discogs.com/database/search?q=' + e.target.value + '&key=' + KEY + '&secret=' + SECRET
+    handleItemMasterOnClick = (master) => {
+        console.log('Delete', master)
     }
 
-    handleAddOnClick = (e) => {
+    handleSearchOnClick = (e) => {
+        URL += (new MusicData(TOKEN)).search(e.target.value, this.updateListComponent)
         fetch(URL, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
@@ -69,14 +78,14 @@ class Application extends Component {
                         <a className='navbar-brand' href='#'>Music</a>
                         <div className='collapse navbar-collapse' id='navbarCollapse'>
                             <PlayListSelectComponent options={this.state.playlists} />
-                            <SearchInputComponent type='text' id='seach' name='q' label='Search' onChange={this.handleOnChange} />
+                            <SearchInputComponent type='text' id='seach' name='q' label='Search' />
 
-                            <button className='btn btn-outline-success my-2 my-sm-0 m-10' onClick={this.handleAddOnClick}>Search</button>
+                            <button className='btn btn-outline-success my-2 my-sm-0 m-10' onClick={this.handleSearchOnClick}>Search</button>
                         </div>
                     </nav>
                 </header>
                 <main role='main'>
-                    <div id='myCarousel' class='carousel slide ' data-ride='carousel'>
+                    <div id='myCarousel' className='carousel slide ' data-ride='carousel'>
 
                         <div className='container marketing row'>
                             <div className='col-md-1' />
@@ -85,8 +94,8 @@ class Application extends Component {
                             </div>
                             <div className='col-md-2' />
                             <div className='mx-auto w-30 col-md-3'>
+                                <ListComponent items={this.state.albums} onItemReadClick={this.handleItemReadClick} />
 
-                                <ListComponent items={this.state.albums} onItemAddClick={this.handleAddOnClick} onItemDeleteClick={this.handleItemDeleteOnClick} />
                             </div>
                             <div className='col-md-1' />
                         </div>
@@ -98,7 +107,7 @@ class Application extends Component {
     }
 
     render () {
-        console.log(this.state.albums)
+        // console.log(this.state.albums)
         return (
             this.renderForm()
         )
