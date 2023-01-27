@@ -18,10 +18,9 @@ function connect () {
         if (error) {
             console.error('connexion error', error.stack)
         } else {
-            console.log('connected')
+            //  console.log('connected')
         }
     })
-    
 }
 
 function query (query, values, resultCallback) {
@@ -32,7 +31,6 @@ function query (query, values, resultCallback) {
         resultCallback(result)
     })
 }
-
 
 function disconnect () {
     client.end()

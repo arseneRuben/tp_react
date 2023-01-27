@@ -1,3 +1,4 @@
+/* eslint-disable n/handle-callback-err */
 const Discogs = require('disconnect').Client
 
 export default class MusicData {
@@ -10,14 +11,13 @@ export default class MusicData {
     search (params, resultCallback) {
         this.database.search(params.query, { type: 'master', per_page: params.perPage }, function (error, data) {
             console.log(data)
-            // resultCallback(data)
+            resultCallback(data)
         })
     }
 
     getMaster (id, resultCallback) {
         this.database.getMaster(id, function (err, master) {
-            // console.log(err, master)
-
+            console.log(err, master)
             resultCallback(master)
         })
     }
