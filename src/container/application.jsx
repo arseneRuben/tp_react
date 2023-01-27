@@ -21,7 +21,8 @@ class Application extends Component {
             albums: [],
             videos: [],
             videoId: '',
-            value: ''
+            searchedValue: '',
+            selectedItem: null
 
         }
     }
@@ -38,6 +39,10 @@ class Application extends Component {
         musicData.getMaster(event.target.id, this.handleItemMasterOnClick(event))
     }
 
+    handleSelectItemChange = (event) => {
+        this.setState({ selectedItem: event.target.id })
+    }
+
     updateListComponent = (data) => {
         this.setState({ albums: data.results })
     }
@@ -47,7 +52,7 @@ class Application extends Component {
     }
 
     handleOnSearchChange = (e) => {
-        this.setState({ value: e.target.value })
+        this.setState({ searchedValue: e.target.value })
     }
 
     handleSearchOnClick = (e) => {
@@ -66,11 +71,12 @@ class Application extends Component {
             })
     }
 
-    handleItemDeleteOnClick = (event) => {
+    handleItemToggleClick = (event) => {
         // Le <button> déclenche l'événement et se trouve à l'intérieur du <li> qui contient l'attribut id
-        const id = event.target.parentElement.id
+        const icon_id = event.target.id
+        const playlist_id = document.getElementById('categorie').value
 
-        fetch('http://localhost:8080/users/' + id, { method: 'DELETE' })
+        fetch('/playlists/' + playlist_id + '/tracks/', { method: 'POST' })
             .then(response => response.json())
             .then(response => {
                 this.setState({ users: response })
@@ -92,8 +98,8 @@ class Application extends Component {
                     <nav className='navbar navbar-expand-md navbar-dark fixed-top bg-dark'>
                         <a className='navbar-brand' href='#'>Music</a>
                         <div className='collapse navbar-collapse' id='navbarCollapse'>
-                            <PlayListSelectComponent options={this.state.playlists} />
-                            <SearchInputComponent type='text' id='search' value={this.state.value} label='search' onChange={this.handleOnSearchChange} />
+                            <PlayListSelectComponent options={this.state.playlists} onChange={this.handleSelectItemChange} />
+                            <SearchInputComponent type='text' id='search' value={this.state.searchedValue} label='search' onChange={this.handleOnSearchChange} />
 
                             <button className='btn btn-outline-success my-2 my-sm-0 m-10' onClick={this.handleSearchOnClick}>Search</button>
                         </div>
@@ -109,7 +115,7 @@ class Application extends Component {
                             </div>
                             <div className='col-md-2' />
                             <div className='mx-auto w-30 col-md-3'>
-                                <ListComponent items={this.state.albums} onItemReadClick={this.handleItemReadClick} />
+                                <ListComponent items={this.state.albums} onItemReadClick={this.handleItemReadClick} onItemToggleClick={this.handleItemToggleClick} />
                             </div>
                             <div className='col-md-1' />
                         </div>

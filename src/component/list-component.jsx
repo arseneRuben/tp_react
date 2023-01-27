@@ -4,7 +4,7 @@ function renderLi (item, index, onItemReadClick, onItemToggleClick) {
     return (
         <li key={index} className='list-group-item'>
 
-            <i className='fa fa-plus' onClick={onItemToggleClick} aria-hidden='true' />
+            <i className='fa fa-plus' id={item.id} onClick={onItemToggleClick} aria-hidden='true' />
 
             <span id={item.master_id} data-index={index} onClick={onItemReadClick}>
                 {item.title}

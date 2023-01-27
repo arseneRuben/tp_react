@@ -7,10 +7,11 @@ function renderOptions (options) {
 
     return resultat
 }
-const PlayListSelectComponent = ({ options }) => (
+
+const PlayListSelectComponent = ({ options, onChange }) => (
     <div className='collapse navbar-collapse'>
 
-        <select className='custom-select' name='categorie'>
+        <select className='custom-select' name='categorie' id='categorie' onChange={onChange}>
             {renderOptions(options)}
         </select>
     </div>
