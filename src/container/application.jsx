@@ -27,6 +27,12 @@ class Application extends Component {
         }
     }
 
+    // je vais ecire une fonction gestionnaire d'evenenment
+    handleClick = (event) => {
+        console.log(event)
+        console.log(this.state)
+    }
+
     componentDidMount () {
         fetch('http://localhost:8080/playlists', { method: 'GET' })
             .then(response => response.json())
@@ -73,14 +79,19 @@ class Application extends Component {
 
     handleItemToggleClick = (event) => {
         // Le <button> déclenche l'événement et se trouve à l'intérieur du <li> qui contient l'attribut id
-        const icon_id = event.target.id
+        /* const icon_id = event.target.id
         const playlist_id = document.getElementById('categorie').value
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: 'React POST Request Example', uri: '', master_id: icon_id, title: '' })
+        }
 
-        fetch('/playlists/' + playlist_id + '/tracks/', { method: 'POST' })
+        fetch('/playlists/' + playlist_id + '/tracks/', requestOptions)
             .then(response => response.json())
             .then(response => {
                 this.setState({ users: response })
-            })
+            }) */
     }
 
     handleAddOnClick = () => {
@@ -96,7 +107,7 @@ class Application extends Component {
             <>
                 <header>
                     <nav className='navbar navbar-expand-md navbar-dark fixed-top bg-dark'>
-                        <a className='navbar-brand' href='#'>Music</a>
+                        <a className='navbar-brand' href='#' onClick={this.handleClick}>Music</a>
                         <div className='collapse navbar-collapse' id='navbarCollapse'>
                             <PlayListSelectComponent options={this.state.playlists} onChange={this.handleSelectItemChange} />
                             <SearchInputComponent type='text' id='search' value={this.state.searchedValue} label='search' onChange={this.handleOnSearchChange} />
